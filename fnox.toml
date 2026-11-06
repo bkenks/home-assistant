@@ -1,0 +1,8 @@
+#:schema https://fnox.jdx.dev/schema.json
+
+[providers.op]
+type = "1password"
+vault = "credential"
+
+[secrets]
+HASS_TOKEN = { provider = "op", value = "home-assistant/HASS_TOKEN" }

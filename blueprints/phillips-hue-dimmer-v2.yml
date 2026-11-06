@@ -1,0 +1,248 @@
+blueprint:
+  name: Philips Hue Dimmer V2 (Z2M) — Button Actions
+  domain: automation
+  author: Brian Kenkel
+  description: >
+    Run your own actions for each button event of a Philips Hue Dimmer Switch
+    (V2 / RWL022) paired through Zigbee2MQTT.
+
+
+    Each of the four buttons (ON, UP, DOWN, HUE) exposes three events:
+
+    - **Press**: a short press, fired when the button is released.
+
+    - **Hold**: the button is held down.
+
+    - **Hold release**: the button is released after a hold.
+
+
+    Leave any event empty to ignore it. The automation runs in `restart` mode,
+    so a new button event cancels whatever is still running from the previous
+    one (e.g. a hold release can stop a repeat loop started on hold).
+  input:
+    dimmer_device:
+      name: Dimmer Switch
+      description: The Philips Hue Dimmer device from Zigbee2MQTT.
+      selector:
+        device:
+          integration: mqtt
+    on_button:
+      name: ON button
+      icon: mdi:power
+      collapsed: true
+      input:
+        on_press:
+          name: Press
+          default: []
+          selector:
+            action: {}
+        on_hold:
+          name: Hold
+          default: []
+          selector:
+            action: {}
+        on_hold_release:
+          name: Hold release
+          default: []
+          selector:
+            action: {}
+    up_button:
+      name: UP button
+      icon: mdi:brightness-7
+      collapsed: true
+      input:
+        up_press:
+          name: Press
+          default: []
+          selector:
+            action: {}
+        up_hold:
+          name: Hold
+          default: []
+          selector:
+            action: {}
+        up_hold_release:
+          name: Hold release
+          default: []
+          selector:
+            action: {}
+    down_button:
+      name: DOWN button
+      icon: mdi:brightness-5
+      collapsed: true
+      input:
+        down_press:
+          name: Press
+          default: []
+          selector:
+            action: {}
+        down_hold:
+          name: Hold
+          default: []
+          selector:
+            action: {}
+        down_hold_release:
+          name: Hold release
+          default: []
+          selector:
+            action: {}
+    hue_button:
+      name: HUE button
+      icon: mdi:palette
+      collapsed: true
+      input:
+        hue_press:
+          name: Press
+          default: []
+          selector:
+            action: {}
+        hue_hold:
+          name: Hold
+          default: []
+          selector:
+            action: {}
+        hue_hold_release:
+          name: Hold release
+          default: []
+          selector:
+            action: {}
+
+mode: restart
+max_exceeded: silent
+
+triggers:
+  # ON / power button
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: on_press_release
+    id: on_press
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: on_hold
+    id: on_hold
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: on_hold_release
+    id: on_hold_release
+
+  # UP button
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: up_press_release
+    id: up_press
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: up_hold
+    id: up_hold
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: up_hold_release
+    id: up_hold_release
+
+  # DOWN button
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: down_press_release
+    id: down_press
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: down_hold
+    id: down_hold
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: down_hold_release
+    id: down_hold_release
+
+  # HUE button (reports as "off" in Z2M)
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: off_press_release
+    id: hue_press
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: off_hold
+    id: hue_hold
+  - trigger: device
+    domain: mqtt
+    device_id: !input dimmer_device
+    type: action
+    subtype: off_hold_release
+    id: hue_hold_release
+
+conditions: []
+
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: on_press
+        sequence: !input on_press
+      - conditions:
+          - condition: trigger
+            id: on_hold
+        sequence: !input on_hold
+      - conditions:
+          - condition: trigger
+            id: on_hold_release
+        sequence: !input on_hold_release
+
+      - conditions:
+          - condition: trigger
+            id: up_press
+        sequence: !input up_press
+      - conditions:
+          - condition: trigger
+            id: up_hold
+        sequence: !input up_hold
+      - conditions:
+          - condition: trigger
+            id: up_hold_release
+        sequence: !input up_hold_release
+
+      - conditions:
+          - condition: trigger
+            id: down_press
+        sequence: !input down_press
+      - conditions:
+          - condition: trigger
+            id: down_hold
+        sequence: !input down_hold
+      - conditions:
+          - condition: trigger
+            id: down_hold_release
+        sequence: !input down_hold_release
+
+      - conditions:
+          - condition: trigger
+            id: hue_press
+        sequence: !input hue_press
+      - conditions:
+          - condition: trigger
+            id: hue_hold
+        sequence: !input hue_hold
+      - conditions:
+          - condition: trigger
+            id: hue_hold_release
+        sequence: !input hue_hold_release

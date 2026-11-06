@@ -1,0 +1,44 @@
+id: '1793916920275'
+name: Evening
+entities:
+  light.bedroom:
+    min_color_temp_kelvin: 2202
+    max_color_temp_kelvin: 7042
+    effect_list:
+      - blink
+      - breathe
+      - channel_change
+      - colorloop
+      - finish_effect
+      - okay
+      - stop_colorloop
+      - stop_effect
+    supported_color_modes:
+      - color_temp
+      - xy
+    effect: null
+    color_mode: xy
+    brightness: 255
+    color_temp_kelvin: null
+    hs_color:
+      - 21.6
+      - 78.431
+    rgb_color:
+      - 255
+      - 127
+      - 55
+    xy_color:
+      - 0.598
+      - 0.36
+    entity_id:
+      - light.lamp_blue_sm_0x7cb94c681cfc0000
+      - light.lamp_pink_flowers_0x7cb94c68487b0000
+      - light.lamp_pole_top_0x7cb94c6814200000
+      - light.lamp_pole_top_0x7cb94c6865150000
+    friendly_name: Bedroom
+    supported_features: 44
+    state: 'on'
+metadata:
+  light.bedroom:
+    entity_only: true
+icon: mdi:weather-sunset

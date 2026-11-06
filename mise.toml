@@ -1,0 +1,18 @@
+[tools]
+cue = "0.17.1"
+lefthook = "2.2.1"
+
+[tasks]
+"cue:print" = "cue export ./... -e files --out yaml"
+
+[tasks."cue:build"]
+dir = "cue_modules"
+vars.buildDirectory = "{{config_root}}/blueprints/out"
+run = "cue cmd build -t out={{vars.buildDirectory}}"
+
+[tasks.pre-commit]
+sources = ["cue_modules/**/*.cue"]
+run = [
+  { task = "cue:build" },
+  "git add -A {{config_root}}/blueprints/out"
+]

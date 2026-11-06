@@ -1,0 +1,4 @@
+[formatter.cue]
+command = "cue"
+options = ["fmt", "--files"]
+includes = ["*.cue"]

@@ -1,0 +1,62 @@
+mode: restart
+max_exceeded: silent
+blueprint:
+  name: Sonoff Button SNZB-01P
+  domain: automation
+  author: Brian Kenkel
+  input:
+    z2m_device:
+      name: Z2M Device
+      description: The Sonoff Button SNZB-01P device from Zigbee2MQTT
+      selector:
+        device:
+          integration: mqtt
+    single_press:
+      name: SINGLE press
+      default: []
+      selector:
+        action: {}
+    double_press:
+      name: DOUBLE press
+      default: []
+      selector:
+        action: {}
+    long_press:
+      name: LONG press
+      default: []
+      selector:
+        action: {}
+triggers:
+  - trigger: device
+    domain: mqtt
+    type: action
+    device_id: !input z2m_device
+    subtype: single
+    id: single_press
+  - trigger: device
+    domain: mqtt
+    type: action
+    device_id: !input z2m_device
+    subtype: double
+    id: double_press
+  - trigger: device
+    domain: mqtt
+    type: action
+    device_id: !input z2m_device
+    subtype: long
+    id: long_press
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: single_press
+        sequence: !input single_press
+      - conditions:
+          - condition: trigger
+            id: double_press
+        sequence: !input double_press
+      - conditions:
+          - condition: trigger
+            id: long_press
+        sequence: !input long_press
